@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: wbseo_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - wbseo_net
+
+  redis:
+    image: redis:7
+    container_name: wbseo_redis
+    networks:
+      - wbseo_net
+
+  web:
+    build: .
+    container_name: wbseo_web
+    volumes:
+      - .:/app  # Для локальной разработки (код сразу виден в контейнере)
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    networks:
+      - wbseo_net
+
+networks:
+  wbseo_net:
+
+volumes:
+  db-data:

@@ -1,0 +1,13 @@
+{
+  "sku_id": "46254476",
+  "tone": "продающий",
+  "language": "ru",
+  "exclude_keywords": [
+    "дешево",
+    "скидка"
+  ],
+  "include_keywords": [
+    "теплая",
+    "зимняя"
+  ]
+}
